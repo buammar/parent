@@ -2,8 +2,8 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta name="theme-color" content="#7c3aed">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#6d5dfc">
   <title>پنل والدین مدرسه</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon-192.png">
@@ -13,1713 +13,546 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <script src="config.js"></script>
   <script src="api-shim.js"></script>
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --pink: #ec4899;
-      --purple: #a855f7;
-      --violet: #7c3aed;
-      --indigo: #6366f1;
-      --blue: #3b82f6;
-      --cyan: #06b6d4;
-      --teal: #14b8a6;
-      --green: #10b981;
-      --yellow: #fbbf24;
-      --orange: #f97316;
-      --red: #ef4444;
-      --rose: #f43f5e;
-    }
-
-    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-
-    html, body { margin: 0; padding: 0; overflow-x: hidden; }
-
-    body {
-      font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
-      min-height: 100vh;
-      color: #1f2937;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-      background-attachment: fixed;
-      padding: 12px;
-      position: relative;
-    }
-
-    .bubble {
-      position: fixed;
-      border-radius: 50%;
-      opacity: 0.35;
-      pointer-events: none;
-      z-index: 0;
-      filter: blur(40px);
-    }
-    .bubble-1 { width: 250px; height: 250px; background: #ff6b9d; top: -80px; right: -80px; animation: float 8s ease-in-out infinite; }
-    .bubble-2 { width: 200px; height: 200px; background: #feca57; bottom: 10%; left: -60px; animation: float 10s ease-in-out infinite reverse; }
-    .bubble-3 { width: 180px; height: 180px; background: #48dbfb; top: 40%; right: -50px; animation: float 12s ease-in-out infinite; }
-
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(20px, -30px) scale(1.1); }
-    }
-
-    .container-app { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
-
-    /* ============ دکمه خروج ============ */
-    .logout-btn {
-      position: fixed;
-      top: 16px;
-      left: 16px;
-      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-      border: 2px solid rgba(255,255,255,0.3);
-      color: #fff;
-      width: 50px;
-      height: 50px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      z-index: 100;
-      transition: all 0.3s;
-      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5);
-      animation: logoutPulse 2s infinite;
-    }
-
-    @keyframes logoutPulse {
-      0% { box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5), 0 0 0 0 rgba(239, 68, 68, 0.7); }
-      70% { box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5), 0 0 0 12px rgba(239, 68, 68, 0); }
-      100% { box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5), 0 0 0 0 rgba(239, 68, 68, 0); }
-    }
-
-    .logout-btn:active { background: #b91c1c; transform: scale(0.92); }
-
-    /* ============ کارت ورود ============ */
-    .login-card {
-      background: #fff;
-      border-radius: 28px;
-      padding: 30px 22px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
-      position: relative;
-      overflow: hidden;
-      margin-top: 60px;
-    }
-
-    .login-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 6px;
-      background: linear-gradient(90deg, #ec4899, #a855f7, #3b82f6, #10b981, #fbbf24);
-      background-size: 200% 100%;
-      animation: gradientMove 3s linear infinite;
-    }
-
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 200% 50%; }
-    }
-
-    .login-icon {
-      width: 90px; height: 90px;
-      background: linear-gradient(135deg, #ec4899 0%, #a855f7 50%, #6366f1 100%);
-      border-radius: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 18px;
-      color: #fff;
-      font-size: 2.6rem;
-      box-shadow: 0 15px 40px rgba(168, 85, 247, 0.5);
-      animation: pulseIcon 2.5s infinite;
-      transform: rotate(-5deg);
-    }
-
-    @keyframes pulseIcon {
-      0%, 100% { transform: rotate(-5deg) scale(1); }
-      50% { transform: rotate(5deg) scale(1.05); }
-    }
-
-    .login-title {
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #7c3aed, #ec4899);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 6px;
-    }
-
-    .login-subtitle {
-      text-align: center;
-      font-size: 0.85rem;
-      color: #6b7280;
-      margin-bottom: 24px;
-      font-weight: 500;
-    }
-
-    .form-label {
-      font-weight: 700;
-      color: #374151;
-      font-size: 0.9rem;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .input-wrapper { position: relative; }
-
-    .input-wrapper .input-icon {
-      position: absolute;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.2rem;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .input-wrapper .form-control {
-      padding-right: 50px;
-      border-radius: 16px;
-      border: 2px solid #e5e7eb;
-      padding-top: 14px;
-      padding-bottom: 14px;
-      font-size: 1rem;
-      min-height: 56px;
-      background: #f9fafb;
-      transition: all 0.3s;
-      font-family: 'Vazirmatn', sans-serif;
-      font-weight: 600;
-    }
-
-    .input-wrapper .form-control:focus {
-      border-color: #a855f7;
-      background: #fff;
-      box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
-      outline: none;
-    }
-
-    .password-toggle {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(168, 85, 247, 0.1);
-      border: none;
-      color: #a855f7;
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .password-toggle:active { background: rgba(168, 85, 247, 0.2); transform: translateY(-50%) scale(0.92); }
-
-    .btn {
-      border-radius: 16px;
-      font-weight: 700;
-      font-size: 1rem;
-      padding: 14px 20px;
-      min-height: 56px;
-      transition: all 0.25s ease;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-family: 'Vazirmatn', sans-serif;
-    }
-
-    .btn:active { transform: scale(0.97); }
-
-    .btn-login {
-      background: linear-gradient(135deg, #ec4899 0%, #a855f7 50%, #6366f1 100%);
-      background-size: 200% 200%;
-      color: #fff;
-      box-shadow: 0 12px 30px rgba(168, 85, 247, 0.45);
-      animation: gradientShift 3s ease infinite;
-    }
-
-    @keyframes gradientShift {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    .btn-primary-grad {
-      background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-      color: #fff;
-      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
-    }
-
-    .btn-success-grad {
-      background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-      color: #fff;
-      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
-    }
-
-    .btn-absence-grad {
-      background: linear-gradient(135deg, #06b6d4 0%, #14b8a6 100%);
-      color: #fff;
-      box-shadow: 0 10px 25px rgba(6, 182, 212, 0.4);
-    }
-
-    /* ============ کارت اطلاعات دانش‌آموز ============ */
-    .student-info-card {
-      background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
-      border-radius: 28px;
-      padding: 24px 18px;
-      box-shadow: 0 20px 50px rgba(168, 85, 247, 0.25);
-      border: 2px solid rgba(168, 85, 247, 0.15);
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 16px;
-      margin-top: 60px;
-    }
-
-    .student-info-card::before {
-      content: '';
-      position: absolute;
-      top: -50px; left: -50px;
-      width: 150px; height: 150px;
-      background: linear-gradient(135deg, #ec4899, #a855f7);
-      border-radius: 50%;
-      opacity: 0.1;
-    }
-
-    .student-info-card::after {
-      content: '';
-      position: absolute;
-      bottom: -60px; right: -60px;
-      width: 180px; height: 180px;
-      background: linear-gradient(135deg, #3b82f6, #06b6d4);
-      border-radius: 50%;
-      opacity: 0.1;
-    }
-
-    .photo-frame {
-      width: 150px;
-      height: 150px;
-      margin: 0 auto 20px;
-      position: relative;
-      z-index: 2;
-      border-radius: 50%;
-      padding: 5px;
-      background: linear-gradient(135deg, #ec4899, #a855f7, #6366f1, #3b82f6);
-      background-size: 300% 300%;
-      animation: gradientShift 4s ease infinite;
-      box-shadow: 0 15px 40px rgba(168, 85, 247, 0.35);
-    }
-
-    .photo-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      overflow: hidden;
-      background: #f3f4f6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 3px solid #fff;
-    }
-
-    .student-photo {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      display: block;
-    }
-
-    .photo-placeholder {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 4rem;
-    }
-
-    .student-name-title {
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: #7c3aed;
-      margin-bottom: 4px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .student-subtitle {
-      text-align: center;
-      font-size: 0.8rem;
-      color: #6b7280;
-      margin-bottom: 18px;
-      font-weight: 500;
-      position: relative;
-      z-index: 2;
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .info-tile {
-      background: #fff;
-      border-radius: 16px;
-      padding: 12px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      border: 1.5px solid rgba(168, 85, 247, 0.1);
-    }
-
-    .info-tile-icon { font-size: 1.4rem; margin-bottom: 4px; display: block; }
-    .info-tile-label { font-size: 0.72rem; color: #9ca3af; font-weight: 600; margin-bottom: 2px; }
-    .info-tile-value { font-size: 0.95rem; color: #1f2937; font-weight: 800; }
-
-    /* ============ تب‌ها ============ */
-    .tab-buttons-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .tab-btn {
-      background: #fff;
-      border-radius: 20px;
-      padding: 18px 14px;
-      border: 3px solid transparent;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-family: 'Vazirmatn', sans-serif;
-      font-weight: 800;
-      font-size: 0.92rem;
-      color: #6b7280;
-      cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      min-height: 110px;
-    }
-
-    .tab-btn:active { transform: scale(0.96); }
-    .tab-btn-icon { font-size: 1.8rem; transition: transform 0.3s; }
-
-    .tab-btn.marks-tab.active {
-      background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-      color: #fff;
-      border-color: rgba(255,255,255,0.3);
-      box-shadow: 0 15px 35px rgba(99, 102, 241, 0.5);
-      transform: translateY(-3px);
-    }
-
-    .tab-btn.marks-tab.active .tab-btn-icon { transform: scale(1.2); }
-
-    .tab-btn.absence-tab.active {
-      background: linear-gradient(135deg, #06b6d4 0%, #14b8a6 100%);
-      color: #fff;
-      border-color: rgba(255,255,255,0.3);
-      box-shadow: 0 15px 35px rgba(6, 182, 212, 0.5);
-      transform: translateY(-3px);
-    }
-
-    .tab-btn.absence-tab.active .tab-btn-icon { transform: scale(1.2); }
-    .tab-btn.dossier-tab.active { background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%); color:#fff; border-color:rgba(255,255,255,.3); box-shadow:0 15px 35px rgba(249,115,22,.38); transform:translateY(-3px); }
-    .tab-btn.dossier-tab.active .tab-btn-icon { transform:scale(1.2); }
-    .dossier-content::before { content:''; position:absolute; top:0; left:0; right:0; height:5px; background:linear-gradient(90deg,#f59e0b,#f97316,#ec4899); }
-    .dossier-summary { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:14px 0 20px; }
-    .dossier-stat { border-radius:16px; padding:14px 10px; text-align:center; color:#fff; box-shadow:0 8px 18px rgba(0,0,0,.10); }
-    .dossier-stat strong { display:block; font-size:1.5rem; font-weight:900; }
-    .dossier-stat span { font-size:.78rem; font-weight:700; }
-    .dossier-table-wrap { overflow-x:auto; border-radius:14px; }
-    .dossier-print-btn { background:linear-gradient(135deg,#f59e0b,#f97316); color:#fff; box-shadow:0 10px 25px rgba(249,115,22,.28); }
-    .dossier-section-title { font-size:1rem; font-weight:800; margin:18px 0 12px; color:#6d28d9; }
-    /* کارت‌های فشرده روزانه؛ مناسب صفحه موبایل */
-    .daily-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); gap:9px; margin:8px 0 18px; align-items:start; }
-    .daily-card { min-width:0; border:1px solid #e2e8f0; border-radius:15px; overflow:hidden; background:#fff; box-shadow:0 3px 10px rgba(31,41,55,.06); break-inside:avoid; }
-    .daily-card-head { display:flex; align-items:center; justify-content:space-between; gap:7px; padding:8px 11px; color:#fff; background:linear-gradient(135deg,#7c3aed,#4f46e5); }
-    .daily-card-head strong { font-size:.88rem; }
-    .daily-count { flex-shrink:0; border-radius:999px; padding:3px 7px; background:rgba(255,255,255,.2); font-size:.7rem; font-weight:800; }
-    .daily-bells { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:5px; padding:7px; }
-    .daily-bell { min-width:0; border:1px solid #e5e7eb; border-radius:9px; padding:6px 4px; background:#f8fafc; text-align:center; }
-    .daily-bell-top { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
-    .daily-bell-number { font-weight:900; color:#4338ca; font-size:.75rem; }
-    .daily-status { display:inline-block; border-radius:6px; padding:2px 5px; background:#e5e7eb; color:#374151; font-size:.68rem; line-height:1.4; font-weight:800; white-space:normal; }
-    .daily-status.status-present { background:#d1fae5; color:#065f46; }
-    .daily-status.status-absent { background:#fee2e2; color:#991b1b; }
-    .daily-status.status-late { background:#fef3c7; color:#92400e; }
-    .daily-status.status-excused { background:#dbeafe; color:#1e40af; }
-    .daily-lesson { margin-top:5px; font-size:.72rem; line-height:1.45; font-weight:800; color:#111827; overflow-wrap:anywhere; }
-    .daily-meta { display:flex; flex-wrap:wrap; justify-content:center; gap:3px 7px; margin-top:4px; color:#6b7280; font-size:.65rem; line-height:1.4; overflow-wrap:anywhere; }
-    .daily-empty { padding:14px 10px; text-align:center; color:#6b7280; border:1px dashed #c4b5fd; border-radius:12px; background:#faf5ff; }
-    @media(max-width:480px) { .daily-cards { grid-template-columns:minmax(0,1fr); gap:8px; } .daily-card-head { padding:7px 10px; } .daily-bells { grid-template-columns:repeat(4,minmax(0,1fr)); gap:4px; padding:6px; } .daily-bell { padding:5px 3px; border-radius:8px; } .daily-lesson { font-size:.68rem; } .daily-meta { font-size:.61rem; } }
-    @media print {
-      @page { size:A4; margin:12mm; }
-      body { background:#fff !important; padding:0 !important; color:#111827 !important; }
-      body * { visibility:hidden !important; }
-      #parentDossier, #parentDossier * { visibility:visible !important; }
-      #parentDossier { display:block !important; position:absolute !important; inset:0 auto auto 0 !important; width:100% !important; margin:0 !important; padding:0 !important; box-shadow:none !important; border:0 !important; overflow:visible !important; }
-      #parentDossier .no-print { display:none !important; }
-      #parentDossier .dossier-summary { grid-template-columns:repeat(4,minmax(0,1fr)); }
-      #parentDossier .dossier-stat { color:#111827 !important; background:#f3f4f6 !important; box-shadow:none !important; border:1px solid #d1d5db; }
-      #parentDossier .modern-table { font-size:9pt !important; }
-      #parentDossier .daily-cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
-      #parentDossier .daily-card { box-shadow:none !important; border:1px solid #d1d5db; }
-      #parentDossier .daily-card-head { background:#e5e7eb !important; color:#111827 !important; }
-      #parentDossier .daily-bell { background:#fff !important; }
-      #parentDossier .modern-table thead th { background:#e5e7eb !important; color:#111827 !important; }
-      #parentDossier .content-title { color:#111827 !important; }
-      #parentDossier tr { break-inside:avoid; }
-    }
-
-    /* ============ کارت محتوا ============ */
-    .content-card {
-      background: #fff;
-      border-radius: 24px;
-      padding: 22px 18px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-      margin-bottom: 16px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .content-card.marks-content::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 5px;
-      background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
-    }
-
-    .content-card.absence-content::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 5px;
-      background: linear-gradient(90deg, #06b6d4, #14b8a6, #10b981);
-    }
-
-    .content-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: #1f2937;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 2px dashed #e5e7eb;
-    }
-
-    .content-title-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-
-    .marks-content .content-title-icon {
-      background: linear-gradient(135deg, #6366f1, #a855f7);
-      box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
-    }
-
-    .absence-content .content-title-icon {
-      background: linear-gradient(135deg, #06b6d4, #14b8a6);
-      box-shadow: 0 6px 16px rgba(6, 182, 212, 0.35);
-    }
-
-    .form-select {
-      border-radius: 16px;
-      border: 2px solid #e5e7eb;
-      padding: 12px 14px;
-      font-size: 0.95rem;
-      min-height: 52px;
-      background: #f9fafb;
-      font-family: 'Vazirmatn', sans-serif;
-      font-weight: 600;
-      transition: all 0.3s;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a855f7' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: left 14px center;
-      background-size: 14px;
-      padding-left: 40px;
-    }
-
-    .form-select:focus {
-      border-color: #a855f7;
-      box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
-      outline: none;
-    }
-
-    /* ============ جدول مدرن راه راه ============ */
-    .modern-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      font-size: 0.88rem;
-    }
-
-    .modern-table thead th {
-      background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-      color: #fff;
-      padding: 12px 8px;
-      font-weight: 700;
-      font-size: 0.8rem;
-      text-align: center;
-      border: none;
-    }
-
-    .absence-content .modern-table thead th {
-      background: linear-gradient(135deg, #06b6d4 0%, #14b8a6 100%);
-    }
-
-    .modern-table thead th:first-child { border-top-right-radius: 14px; }
-    .modern-table thead th:last-child { border-top-left-radius: 14px; }
-
-    .modern-table tbody tr { transition: all 0.2s; }
-
-    .modern-table tbody tr:nth-child(odd) { background: #faf5ff; }
-    .absence-content .modern-table tbody tr:nth-child(odd) { background: #ecfeff; }
-    .modern-table tbody tr:nth-child(even) { background: #fff; }
-
-    .modern-table tbody td {
-      padding: 12px 8px;
-      text-align: center;
-      vertical-align: middle;
-      border-bottom: 1px solid #f3f4f6;
-      font-weight: 600;
-      color: #374151;
-    }
-
-    .modern-table tbody tr:last-child td { border-bottom: none; }
-
-    .row-num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
-      color: #7c3aed;
-      font-weight: 800;
-      font-size: 0.8rem;
-    }
-
-    .absence-content .row-num {
-      background: linear-gradient(135deg, #cffafe, #a5f3fc);
-      color: #0e7490;
-    }
-
-    .lesson-name {
-      text-align: right !important;
-      padding-right: 12px !important;
-      font-weight: 700;
-      color: #1f2937;
-    }
-
-    .score-badge {
-      display: inline-block;
-      min-width: 48px;
-      padding: 5px 12px;
-      border-radius: 12px;
-      font-weight: 800;
-      font-size: 0.95rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    }
-
-    .score-pass {
-      background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-      color: #047857;
-    }
-
-    .score-fail {
-      background: linear-gradient(135deg, #fee2e2, #fecaca);
-      color: #b91c1c;
-    }
-
-    .status-chip {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 10px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .status-pass {
-      background: rgba(16, 185, 129, 0.15);
-      color: #047857;
-    }
-
-    .status-fail {
-      background: rgba(239, 68, 68, 0.15);
-      color: #b91c1c;
-    }
-
-    /* ============ تاریخ و نوع غیبت در جدول ============ */
-    .date-chip {
-      display: inline-block;
-      background: linear-gradient(135deg, #cffafe, #a5f3fc);
-      color: #0e7490;
-      padding: 4px 12px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.82rem;
-      border: 1px solid #67e8f9;
-      white-space: nowrap;
-    }
-
-    /* chip نوع غیبت - رنگ‌های مختلف */
-    .type-chip {
-      display: inline-block;
-      padding: 5px 12px;
-      border-radius: 10px;
-      font-weight: 800;
-      font-size: 0.78rem;
-      white-space: nowrap;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      border: 1px solid transparent;
-    }
-
-    /* ۱. غیرموجه - قرمز */
-    .type-unjustified {
-      background: linear-gradient(135deg, #fee2e2, #fecaca);
-      color: #b91c1c;
-      border-color: #fca5a5;
-    }
-
-    /* ۲. بیماری - آبی */
-    .type-sick {
-      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-      color: #1e40af;
-      border-color: #93c5fd;
-    }
-
-    /* ۳. موجه - سبز */
-    .type-justified {
-      background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-      color: #047857;
-      border-color: #6ee7b7;
-    }
-
-    /* ۴. تأخیر - بنفش */
-    .type-late {
-      background: linear-gradient(135deg, #ede9fe, #ddd6fe);
-      color: #6d28d9;
-      border-color: #c4b5fd;
-    }
-
-    /* ۵. مرخصی - فیروزه‌ای */
-    .type-permission {
-      background: linear-gradient(135deg, #cffafe, #a5f3fc);
-      color: #0e7490;
-      border-color: #67e8f9;
-    }
-
-    /* ۶. سایر - خاکستری */
-    .type-other {
-      background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-      color: #334155;
-      border-color: #cbd5e1;
-    }
-
-    .reason-text {
-      text-align: right !important;
-      padding-right: 12px !important;
-      color: #4b5563;
-      font-weight: 600;
-    }
-
-    /* ============ خلاصه آماری ============ */
-    .stats-summary {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .stat-box {
-      border-radius: 16px;
-      padding: 14px 10px;
-      text-align: center;
-      color: #fff;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
-
-    .stat-box-1 { background: linear-gradient(135deg, #10b981, #06b6d4); }
-    .stat-box-2 { background: linear-gradient(135deg, #6366f1, #a855f7); }
-    .stat-box-3 { background: linear-gradient(135deg, #06b6d4, #14b8a6); }
-    .stat-box-4 { background: linear-gradient(135deg, #ec4899, #f43f5e); }
-
-    .stat-value { font-size: 1.5rem; font-weight: 900; margin-bottom: 2px; }
-    .stat-label { font-size: 0.75rem; font-weight: 600; opacity: 0.95; }
-
-    /* ============ راهنمای رنگ‌ها ============ */
-    .absence-legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 14px;
-      padding: 10px 12px;
-      background: #f9fafb;
-      border-radius: 12px;
-      border: 1px dashed #e5e7eb;
-    }
-
-    .legend-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #4b5563;
-      padding: 3px 8px;
-      border-radius: 8px;
-      background: #fff;
-    }
-
-    .legend-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-
-    .legend-dot-unjustified { background: #ef4444; }
-    .legend-dot-sick { background: #3b82f6; }
-    .legend-dot-justified { background: #10b981; }
-    .legend-dot-late { background: #8b5cf6; }
-    .legend-dot-permission { background: #06b6d4; }
-    .legend-dot-other { background: #64748b; }
-
-    /* ============ لودینگ ============ */
-    .loading-box {
-      background: rgba(255,255,255,0.95);
-      border-radius: 24px;
-      padding: 40px 20px;
-      text-align: center;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-      margin-bottom: 16px;
-    }
-
-    .loading-spinner {
-      display: inline-block;
-      width: 60px;
-      height: 60px;
-      border: 5px solid rgba(168, 85, 247, 0.15);
-      border-top-color: #a855f7;
-      border-right-color: #ec4899;
-      border-radius: 50%;
-      animation: spin 0.9s linear infinite;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .loading-text {
-      margin-top: 16px;
-      font-weight: 700;
-      color: #7c3aed;
-      font-size: 0.95rem;
-    }
-
-    .alert {
-      border-radius: 16px;
-      border: none;
-      padding: 14px 18px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      animation: slideDown 0.3s ease;
-      font-size: 0.9rem;
-      margin-bottom: 12px;
-    }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .alert-danger {
-      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-      color: #dc2626;
-      border-right: 5px solid #dc2626;
-      box-shadow: 0 8px 20px rgba(220, 38, 38, 0.15);
-    }
-
-    .alert-success {
-      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-      color: #059669;
-      border-right: 5px solid #059669;
-      box-shadow: 0 8px 20px rgba(5, 150, 105, 0.15);
-    }
-
-    .footer {
-      text-align: center;
-      color: rgba(255, 255, 255, 0.9);
-      padding: 20px 0 10px;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    .footer-icons {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      margin-top: 8px;
-      font-size: 1.1rem;
-    }
-
-    .footer-icons i { animation: heartBeat 1.5s infinite; }
-    .footer-icons i:nth-child(2) { animation-delay: 0.3s; }
-    .footer-icons i:nth-child(3) { animation-delay: 0.6s; }
-
-    @keyframes heartBeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-    }
-
-    .hidden { display: none !important; }
-
-    .fade-in { animation: fadeIn 0.5s ease; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ============ موبایل ============ */
-    @media (max-width: 576px) {
-      body { padding: 10px; }
-      .login-card { padding: 26px 18px; margin-top: 60px; }
-      .student-info-card { padding: 20px 14px; margin-top: 60px; }
-      .photo-frame { width: 135px; height: 135px; }
-      .photo-placeholder { font-size: 3.5rem; }
-      .modern-table { font-size: 0.78rem; }
-      .modern-table thead th { padding: 10px 4px; font-size: 0.7rem; }
-      .modern-table tbody td { padding: 10px 4px; }
-      .score-badge { min-width: 42px; padding: 4px 8px; font-size: 0.85rem; }
-      .status-chip { font-size: 0.7rem; padding: 3px 8px; }
-      .type-chip { font-size: 0.7rem; padding: 4px 8px; }
-      .date-chip { font-size: 0.7rem; padding: 3px 8px; }
-      .lesson-name { padding-right: 8px !important; }
-      .reason-text { padding-right: 8px !important; }
-      .info-tile-value { font-size: 0.85rem; }
-      .tab-btn { min-height: 100px; font-size: 0.85rem; padding: 14px 10px; }
-      .tab-btn-icon { font-size: 1.5rem; }
-      .logout-btn { width: 46px; height: 46px; font-size: 1.15rem; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
+    :root{--bg:#f4f5fb;--card:#fff;--ink:#1e1b3a;--muted:#6b7280;--line:#e9eaf4;--p:#6d5dfc;--p2:#8b5cf6;
+      --ok:#10b981;--bad:#ef4444;--warn:#f59e0b;--info:#0ea5e9;--r:18px;--sh:0 4px 20px rgba(30,27,58,.07)}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{margin:0}
+    body{font-family:'Vazirmatn',Tahoma,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;
+      padding-bottom:calc(90px + env(safe-area-inset-bottom,0px));font-size:15px}
+    .hidden{display:none!important}
+    button{font-family:inherit;cursor:pointer}
+    .app{max-width:640px;margin:0 auto;padding:0 14px}
+
+    /* ورود */
+    .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px 0;margin-bottom:-90px}
+    .login-card{width:100%;background:var(--card);border-radius:26px;padding:30px 22px;box-shadow:0 20px 50px rgba(109,93,252,.18)}
+    .logo{width:72px;height:72px;border-radius:22px;margin:0 auto 14px;display:grid;place-items:center;color:#fff;font-size:2rem;
+      background:linear-gradient(135deg,var(--p),var(--p2));box-shadow:0 10px 24px rgba(109,93,252,.4)}
+    .login-card h1{text-align:center;font-size:1.35rem;margin:0 0 4px;font-weight:800}
+    .login-card .sub{text-align:center;color:var(--muted);font-size:.85rem;margin:0 0 24px}
+    .field{margin-bottom:16px}
+    .field label{display:block;font-weight:600;font-size:.85rem;margin-bottom:6px}
+    .input{position:relative}
+    .input i.lead{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--p);font-size:1.1rem}
+    .input input{width:100%;height:52px;border:1.5px solid var(--line);background:#f8f8fd;border-radius:14px;padding:0 44px;
+      font:600 1rem 'Vazirmatn',sans-serif;color:var(--ink);transition:.2s}
+    .input input:focus{outline:0;border-color:var(--p);background:#fff;box-shadow:0 0 0 4px rgba(109,93,252,.14)}
+    .eye{position:absolute;left:8px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--muted);width:38px;height:38px;font-size:1.1rem}
+    .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:52px;border:0;border-radius:14px;
+      font-weight:700;font-size:1rem;color:#fff;background:linear-gradient(135deg,var(--p),var(--p2));
+      box-shadow:0 8px 20px rgba(109,93,252,.3);transition:.15s}
+    .btn:active{transform:scale(.98)}
+    .btn:disabled{opacity:.55;box-shadow:none}
+    .btn.green{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 8px 20px rgba(16,185,129,.28)}
+
+    /* هدر دانش‌آموز */
+    .hero{margin:14px 0;border-radius:24px;padding:18px;color:#fff;position:relative;overflow:hidden;
+      background:linear-gradient(135deg,#5b4bf0,#8b5cf6 60%,#c084fc);box-shadow:0 12px 30px rgba(109,93,252,.3)}
+    .hero::after{content:'';position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.1);left:-50px;top:-60px}
+    .hero-row{display:flex;align-items:center;gap:14px;position:relative;z-index:1}
+    .avatar{width:64px;height:64px;border-radius:20px;background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:2rem;overflow:hidden;flex:none;border:2px solid rgba(255,255,255,.5)}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    .hero h2{margin:0;font-size:1.15rem;font-weight:800}
+    .hero small{opacity:.85;font-size:.8rem}
+    .logout{margin-right:auto;width:42px;height:42px;border-radius:13px;border:0;background:rgba(255,255,255,.2);color:#fff;font-size:1.15rem}
+    .logout:active{background:rgba(255,255,255,.35)}
+    .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;position:relative;z-index:1}
+    .tag{background:rgba(255,255,255,.18);border-radius:10px;padding:5px 11px;font-size:.78rem;font-weight:600;display:flex;gap:5px;align-items:center}
+
+    /* پنل‌ها */
+    .panel{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);padding:16px;animation:in .25s ease}
+    @keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .ptitle{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.02rem;margin:0 0 14px}
+    .ptitle .ic{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--p),var(--p2))}
+    .ptitle .act{margin-right:auto;display:flex;gap:6px}
+    .mini{width:36px;height:36px;border-radius:11px;border:1px solid var(--line);background:#fff;color:var(--p);font-size:1rem}
+    .mini:active{background:#f1efff}
+
+    /* چیپ‌ها */
+    .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;margin-bottom:4px;scrollbar-width:none}
+    .chips::-webkit-scrollbar{display:none}
+    .chip{flex:none;border:1.5px solid var(--line);background:#fff;color:var(--muted);border-radius:12px;padding:8px 15px;font-weight:600;font-size:.85rem;transition:.15s}
+    .chip.on{background:var(--p);border-color:var(--p);color:#fff;box-shadow:0 6px 14px rgba(109,93,252,.3)}
+
+    /* آمار */
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:10px;margin-bottom:14px}
+    .stat{border-radius:15px;padding:12px 8px;text-align:center;color:#fff}
+    .stat b{display:block;font-size:1.4rem;font-weight:800;line-height:1.3}
+    .stat span{font-size:.74rem;opacity:.92}
+    .g1{background:linear-gradient(135deg,#6d5dfc,#8b5cf6)}.g2{background:linear-gradient(135deg,#0ea5e9,#06b6d4)}
+    .g3{background:linear-gradient(135deg,#10b981,#14b8a6)}.g4{background:linear-gradient(135deg,#f59e0b,#f97316)}
+    .g5{background:linear-gradient(135deg,#ef4444,#f43f5e)}
+
+    /* لیست‌ها */
+    .list{display:flex;flex-direction:column;gap:9px}
+    .row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}
+    .row .name{flex:1;font-weight:600;min-width:0}
+    .row .meta{font-size:.76rem;color:var(--muted);font-weight:400}
+    .score{min-width:48px;text-align:center;border-radius:11px;padding:6px 10px;font-weight:800}
+    .score.pass{background:#dcfce7;color:#047857}.score.fail{background:#ffedd5;color:#c2410c}
+    .pill{border-radius:9px;padding:3px 10px;font-size:.74rem;font-weight:700;white-space:nowrap}
+    .pill.ok{background:#dcfce7;color:#047857}.pill.bad{background:#fee2e2;color:#b91c1c}
+    .pill.warn{background:#fef3c7;color:#b45309}.pill.info{background:#e0f2fe;color:#0369a1}.pill.muted{background:#f1f5f9;color:#475569}
+    .date{background:#f1efff;color:var(--p);border-radius:10px;padding:5px 10px;font-weight:700;font-size:.82rem}
+    .empty{text-align:center;color:var(--muted);padding:30px 10px}
+    .empty i{display:block;font-size:2.2rem;opacity:.5;margin-bottom:6px}
+
+    /* گزارش روزانه */
+    .day{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
+    .day-head{width:100%;display:flex;align-items:center;gap:10px;padding:12px 14px;border:0;background:#faf9ff;font-weight:700;font-size:.92rem;color:var(--ink);text-align:right}
+    .day-head .cnt{margin-right:auto}
+    .day-head i.chev{transition:.2s;color:var(--muted)}
+    .day.open .chev{transform:rotate(180deg)}
+    .day-body{display:none;padding:10px;gap:8px;flex-direction:column}
+    .day.open .day-body{display:flex}
+    .bell{border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+    .bell-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+    .bell-no{font-weight:700;font-size:.85rem}
+    .bell-l{margin-top:6px;font-weight:600;font-size:.88rem}
+    .bell-m{margin-top:3px;color:var(--muted);font-size:.78rem;display:flex;gap:12px;flex-wrap:wrap}
+    h4.sec{margin:20px 0 10px;font-size:.95rem;font-weight:800}
+    .tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+    table{width:100%;border-collapse:collapse;font-size:.83rem}
+    th{background:#f6f5ff;color:var(--p);padding:10px 8px;font-weight:700;white-space:nowrap}
+    td{padding:9px 8px;text-align:center;border-top:1px solid var(--line)}
+
+    /* کارنامه */
+    .dl-box{text-align:center;padding:10px 4px}
+    .dl-ic{width:76px;height:76px;margin:6px auto 10px;border-radius:24px;display:grid;place-items:center;font-size:2.2rem;color:#fff;background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 10px 24px rgba(16,185,129,.35)}
+    .dl-box p{color:var(--muted);font-size:.85rem;margin:0 0 16px}
+    .picked{font-weight:700;margin-bottom:14px}.picked b{color:var(--p)}
+
+    /* ناوبری پایین */
+    .nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);
+      border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+    .nav-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+    .nav button{border:0;background:none;color:#9ca3af;padding:7px 2px;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.7rem;font-weight:600;transition:.2s}
+    .nav button i{font-size:1.3rem}
+    .nav button.on{color:var(--p);background:#f1efff}
+
+    /* پیام‌ها */
+    .toast{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 28px);max-width:420px;
+      display:flex;align-items:center;gap:10px;padding:13px 16px;border-radius:14px;color:#fff;font-weight:600;font-size:.88rem;box-shadow:0 10px 30px rgba(0,0,0,.2);animation:in .25s}
+    .toast.err{background:#dc2626}.toast.suc{background:#059669}
+    .loading{display:flex;justify-content:center;align-items:center;gap:10px;padding:26px;color:var(--muted);font-weight:600}
+    .spin{width:22px;height:22px;border:3px solid #e0dcff;border-top-color:var(--p);border-radius:50%;animation:sp .7s linear infinite}
+    @keyframes sp{to{transform:rotate(360deg)}}
+    .foot{text-align:center;color:#9ca3af;font-size:.75rem;margin:20px 0}
+
+    @media print{
+      body{background:#fff;padding:0}.nav,.hero .logout,.chips,.no-print,.foot,.toast{display:none!important}
+      .panel{box-shadow:none;padding:0}.day-body{display:flex!important}
     }
   </style>
 </head>
 <body>
-  <div class="bubble bubble-1"></div>
-  <div class="bubble bubble-2"></div>
-  <div class="bubble bubble-3"></div>
+  <div id="toast" class="toast hidden"><i class="bi"></i><span></span></div>
 
-  <button id="logoutBtn" class="logout-btn hidden" title="خروج">
-    <i class="bi bi-box-arrow-right"></i>
-  </button>
-
-  <div class="container-app">
-
-    <!-- ===== کارت ورود ===== -->
-    <div id="loginCard" class="login-card fade-in">
-      <div class="login-icon">
-        <i class="bi bi-shield-lock-fill"></i>
-      </div>
-      <h2 class="login-title">🌟 پنل والدین مدرسه</h2>
-      <p class="login-subtitle">✨ برای مشاهده اطلاعات فرزندتان وارد شوید ✨</p>
-
-      <div class="mb-3">
-        <label for="username" class="form-label">
-          <i class="bi bi-person-fill" style="color: #a855f7;"></i> نام کاربری (کد دانش‌آموز)
-        </label>
-        <div class="input-wrapper">
-          <i class="bi bi-person-badge input-icon" style="color: #a855f7;"></i>
-          <input type="text" inputmode="numeric" autocomplete="off" 
-                 class="form-control" id="username" 
-                 placeholder="کد دانش‌آموز را وارد کنید">
+  <div class="app">
+    <!-- ورود -->
+    <div id="loginWrap" class="login-wrap">
+      <div class="login-card">
+        <div class="logo"><i class="bi bi-mortarboard-fill"></i></div>
+        <h1>پنل والدین مدرسه</h1>
+        <p class="sub">برای مشاهده اطلاعات فرزندتان وارد شوید</p>
+        <div class="field">
+          <label for="username">نام کاربری (کد دانش‌آموز)</label>
+          <div class="input"><i class="bi bi-person-badge lead"></i>
+            <input id="username" type="text" inputmode="numeric" autocomplete="off" placeholder="کد دانش‌آموز"></div>
         </div>
-      </div>
-
-      <div class="mb-4">
-        <label for="password" class="form-label">
-          <i class="bi bi-key-fill" style="color: #ec4899;"></i> رمز عبور
-        </label>
-        <div class="input-wrapper">
-          <i class="bi bi-lock-fill input-icon" style="color: #ec4899;"></i>
-          <input type="password" autocomplete="off" 
-                 class="form-control" id="password" 
-                 placeholder="رمز عبور را وارد کنید">
-          <button type="button" class="password-toggle" id="togglePassword">
-            <i class="bi bi-eye-fill"></i>
-          </button>
+        <div class="field">
+          <label for="password">رمز عبور</label>
+          <div class="input"><i class="bi bi-lock-fill lead"></i>
+            <input id="password" type="password" autocomplete="off" placeholder="رمز عبور">
+            <button type="button" class="eye" id="togglePassword" aria-label="نمایش رمز"><i class="bi bi-eye-fill"></i></button></div>
         </div>
-      </div>
-
-      <button id="loginBtn" class="btn btn-login w-100">
-        <i class="bi bi-box-arrow-in-right"></i> ورود به پنل
-      </button>
-    </div>
-
-    <!-- ===== اطلاعات دانش‌آموز ===== -->
-    <div id="studentInfo" class="student-info-card hidden fade-in">
-      <div class="photo-frame">
-        <div class="photo-inner">
-          <img id="studentPhoto" class="student-photo hidden" src="" alt="عکس دانش‌آموز">
-          <div id="photoPlaceholder" class="photo-placeholder">
-            <i class="bi bi-person-fill"></i>
-          </div>
-        </div>
-      </div>
-
-      <h3 class="student-name-title" id="studentNameTitle">-</h3>
-      <p class="student-subtitle">
-        <i class="bi bi-mortarboard-fill" style="color: #a855f7;"></i>
-        دانش‌آموز مدرسه
-      </p>
-
-      <div class="info-grid">
-        <div class="info-tile">
-          <span class="info-tile-icon">🆔</span>
-          <div class="info-tile-label">کد دانش‌آموز</div>
-          <div class="info-tile-value" id="infoCode">-</div>
-        </div>
-        <div class="info-tile">
-          <span class="info-tile-icon">📚</span>
-          <div class="info-tile-label">پایه</div>
-          <div class="info-tile-value" id="infoGrade">-</div>
-        </div>
-        <div class="info-tile">
-          <span class="info-tile-icon">🎯</span>
-          <div class="info-tile-label">رشته</div>
-          <div class="info-tile-value" id="infoField">-</div>
-        </div>
-        <div class="info-tile">
-          <span class="info-tile-icon">👤</span>
-          <div class="info-tile-label">نام</div>
-          <div class="info-tile-value" id="infoName">-</div>
-        </div>
+        <button id="loginBtn" class="btn"><i class="bi bi-box-arrow-in-left"></i> ورود به پنل</button>
       </div>
     </div>
 
-    <!-- ===== دکمه‌های تب‌مانند ===== -->
-    <div id="tabButtons" class="tab-buttons-row hidden fade-in">
-      <button id="marksTabBtn" class="tab-btn marks-tab">
-        <span class="tab-btn-icon">📊</span>
-        <span>مشاهده نمرات</span>
-      </button>
-      <button id="absenceTabBtn" class="tab-btn absence-tab">
-        <span class="tab-btn-icon">📅</span>
-        <span>مشاهده غیبت‌ها</span>
-      </button>
-      <button id="dossierTabBtn" class="tab-btn dossier-tab">
-        <span class="tab-btn-icon">🗂️</span>
-        <span>گزارش روزانه دانش‌آموز</span>
-      </button>
-    </div>
-
-    <!-- ===== بخش نمرات ===== -->
-    <div id="marksSection" class="content-card marks-content hidden fade-in">
-      <div class="content-title">
-        <div class="content-title-icon">
-          <i class="bi bi-trophy-fill"></i>
-        </div>
-        <span>📊 نمرات ماهانه</span>
-        <span id="currentMonth" style="margin-right: auto; background: linear-gradient(135deg, #a855f7, #ec4899); color: #fff; padding: 4px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;"></span>
+    <!-- اطلاعات دانش‌آموز -->
+    <div id="studentInfo" class="hero hidden">
+      <div class="hero-row">
+        <div class="avatar"><img id="studentPhoto" class="hidden" alt="عکس دانش‌آموز"><i id="photoPlaceholder" class="bi bi-person-fill"></i></div>
+        <div><h2 id="studentNameTitle">-</h2><small>دانش‌آموز مدرسه</small></div>
+        <button id="logoutBtn" class="logout" title="خروج" aria-label="خروج"><i class="bi bi-box-arrow-right"></i></button>
       </div>
-
-      <div class="mb-3">
-        <label class="form-label">
-          <i class="bi bi-calendar-month" style="color: #a855f7;"></i> انتخاب ماه
-        </label>
-        <select class="form-select" id="monthSelector">
-          <option value="">-- انتخاب ماه --</option>
-          <option value="مهر">🌿 مهر</option>
-          <option value="آبان">🍂 آبان</option>
-          <option value="آذر">❄️ آذر</option>
-          <option value="دی">☃️ دی</option>
-          <option value="بهمن">🌨️ بهمن</option>
-          <option value="اسفند">🌷 اسفند</option>
-          <option value="فروردین">🌼 فروردین</option>
-          <option value="اردیبهشت">🌺 اردیبهشت</option>
-          <option value="خرداد">🌞 خرداد</option>
-        </select>
-      </div>
-
-      <button id="showMarks" class="btn btn-primary-grad w-100 mb-2">
-        <i class="bi bi-eye-fill"></i> نمایش نمرات
-      </button>
-
-      <button id="openMonthlyReport" class="btn btn-success-grad w-100">
-        <i class="bi bi-file-earmark-pdf-fill"></i> دانلود کارنامه PDF
-      </button>
-
-      <div id="marksResult" class="hidden" style="margin-top: 20px;">
-        <table class="modern-table">
-          <thead>
-            <tr>
-              <th style="width: 45px;">#</th>
-              <th>📚 درس</th>
-              <th style="width: 70px;">⭐ نمره</th>
-              <th style="width: 90px;">📊 وضعیت</th>
-            </tr>
-          </thead>
-          <tbody id="marksTableBody"></tbody>
-        </table>
-
-        <div class="stats-summary" id="marksStats"></div>
+      <div class="tags">
+        <span class="tag"><i class="bi bi-person-vcard"></i><span id="infoCode">-</span></span>
+        <span class="tag"><i class="bi bi-journal-bookmark"></i><span id="infoGrade">-</span></span>
+        <span class="tag"><i class="bi bi-bullseye"></i><span id="infoField">-</span></span>
       </div>
     </div>
 
-    <!-- ===== بخش غیبت‌ها ===== -->
-    <div id="absenceSection" class="content-card absence-content hidden fade-in">
-      <div class="content-title">
-        <div class="content-title-icon">
-          <i class="bi bi-clock-history"></i>
-        </div>
-        <span>📅 گزارش غیبت‌ها</span>
+    <div id="loading" class="loading hidden"><div class="spin"></div>در حال دریافت اطلاعات...</div>
+
+    <!-- نمرات -->
+    <section id="p-marks" class="panel hidden">
+      <h3 class="ptitle"><span class="ic"><i class="bi bi-bar-chart-fill"></i></span>نمرات ماهانه</h3>
+      <div class="chips" data-months></div>
+      <div id="marksResult"></div>
+    </section>
+
+    <!-- غیبت‌ها -->
+    <section id="p-absence" class="panel hidden">
+      <h3 class="ptitle"><span class="ic" style="background:linear-gradient(135deg,#f59e0b,#f97316)"><i class="bi bi-calendar-x-fill"></i></span>گزارش غیبت‌ها</h3>
+      <div id="absencesResult"></div>
+    </section>
+
+    <!-- گزارش روزانه -->
+    <section id="p-dossier" class="panel hidden">
+      <h3 class="ptitle"><span class="ic" style="background:linear-gradient(135deg,#0ea5e9,#06b6d4)"><i class="bi bi-journal-check"></i></span>گزارش روزانه
+        <span class="act no-print">
+          <button id="loadDossierBtn" class="mini" title="به‌روزرسانی"><i class="bi bi-arrow-clockwise"></i></button>
+          <button id="printDossierBtn" class="mini" title="چاپ / ذخیره PDF"><i class="bi bi-printer"></i></button>
+        </span></h3>
+      <div id="dossierStudentLine" class="meta" style="color:var(--muted);font-size:.8rem;margin-bottom:12px"></div>
+      <div id="dossierSummary" class="stats"></div>
+      <div class="chips no-print" id="dossierFilters">
+        <button class="chip on" data-f="all">همه</button>
+        <button class="chip" data-f="absent">غایب</button>
+        <button class="chip" data-f="late">تأخیر</button>
+        <button class="chip" data-f="present">حاضر</button>
       </div>
+      <div id="dossierAttendanceCards" class="list"></div>
+      <h4 class="sec">آخرین نمرات ثبت‌شده</h4>
+      <div class="tw"><table><thead><tr><th>#</th><th>تاریخ</th><th>درس</th><th>نوع ارزیابی</th><th>نمره</th></tr></thead>
+        <tbody id="dossierGradesBody"></tbody></table></div>
+    </section>
 
-      <!-- راهنمای رنگ‌ها -->
-      <div class="absence-legend">
-        <span class="legend-item"><span class="legend-dot legend-dot-unjustified"></span> غیرموجه</span>
-        <span class="legend-item"><span class="legend-dot legend-dot-sick"></span> بیماری</span>
-        <span class="legend-item"><span class="legend-dot legend-dot-justified"></span> موجه</span>
-        <span class="legend-item"><span class="legend-dot legend-dot-late"></span> تأخیر</span>
-        <span class="legend-item"><span class="legend-dot legend-dot-permission"></span> مرخصی</span>
-        <span class="legend-item"><span class="legend-dot legend-dot-other"></span> سایر</span>
+    <!-- کارنامه -->
+    <section id="p-report" class="panel hidden">
+      <h3 class="ptitle"><span class="ic" style="background:linear-gradient(135deg,#10b981,#059669)"><i class="bi bi-file-earmark-pdf-fill"></i></span>دانلود کارنامه</h3>
+      <div class="dl-box">
+        <div class="dl-ic"><i class="bi bi-cloud-arrow-down-fill"></i></div>
+        <p>ماه مورد نظر را انتخاب کنید و کارنامه را به‌صورت PDF دریافت کنید.</p>
+        <div class="chips" data-months style="justify-content:flex-start"></div>
+        <div class="picked">ماه انتخابی: <b id="pickedMonth">—</b></div>
+        <button id="openMonthlyReport" class="btn green"><i class="bi bi-download"></i> دانلود کارنامه PDF</button>
       </div>
+    </section>
 
-      <button id="showAbsences" class="btn btn-absence-grad w-100 mb-3">
-        <i class="bi bi-list-check"></i> نمایش غیبت‌ها
-      </button>
-
-      <div id="absencesResult" class="hidden">
-        <table class="modern-table">
-          <thead>
-            <tr>
-              <th style="width: 45px;">#</th>
-              <th style="width: 110px;">📅 تاریخ</th>
-              <th style="width: 100px;">📋 نوع</th>
-              <th>🔔 تعداد زنگ‌های غایب</th>
-            </tr>
-          </thead>
-          <tbody id="absencesTableBody"></tbody>
-        </table>
-
-        <div class="stats-summary" id="absencesStats"></div>
-      </div>
-    </div>
-
-    <!-- ===== گزارش روزانه دانش‌آموز (محدود به کد ملی حساب واردشده) ===== -->
-    <div id="parentDossier" class="content-card dossier-content hidden fade-in">
-      <div class="content-title">
-        <div class="content-title-icon" style="background:linear-gradient(135deg,#f59e0b,#f97316);"><i class="bi bi-folder2-open"></i></div>
-        <span>📅 گزارش روزانه دانش‌آموز</span>
-      </div>
-      <p class="text-muted small">این گزارش فقط مربوط به دانش‌آموز متصل به حساب ورود شماست.</p>
-      <div id="dossierStudentLine" class="alert alert-success" style="display:block;">در حال دریافت گزارش روزانه...</div>
-      <div id="dossierSummary" class="dossier-summary"></div>
-      <div class="d-flex gap-2 flex-wrap no-print mb-3">
-        <button id="loadDossierBtn" class="btn btn-primary-grad flex-fill"><i class="bi bi-arrow-clockwise"></i> به‌روزرسانی گزارش</button>
-        <button id="printDossierBtn" class="btn dossier-print-btn flex-fill"><i class="bi bi-file-earmark-pdf-fill"></i> چاپ / ذخیره گزارش PDF</button>
-      </div>
-      <h4 class="dossier-section-title">📅 حضور و غیاب به تفکیک روز</h4>
-      <div id="dossierAttendanceCards" class="daily-cards"><div class="daily-empty">برای مشاهده، گزارش را بارگذاری کنید.</div></div>
-      <h4 class="dossier-section-title">📘 آخرین نمرات ثبت‌شده</h4>
-      <div class="dossier-table-wrap">
-        <table class="modern-table"><thead><tr><th>#</th><th>تاریخ</th><th>درس</th><th>نوع ارزیابی</th><th>نمره</th></tr></thead><tbody id="dossierGradesBody"><tr><td colspan="5">اطلاعات نمره در دسترس نیست.</td></tr></tbody></table>
-      </div>
-      <p class="small text-muted mt-3">برای دریافت PDF، گزینه «چاپ / ذخیره گزارش PDF» را بزنید و در پنجره چاپ مرورگر، «ذخیره به‌صورت PDF» را انتخاب کنید.</p>
-    </div>
-
-    <!-- ===== لودینگ ===== -->
-    <div id="loading" class="loading-box hidden">
-      <div class="loading-spinner"></div>
-      <p class="loading-text">⏳ در حال دریافت اطلاعات...</p>
-    </div>
-
-    <!-- ===== پیام خطا ===== -->
-    <div id="errorMessage" class="alert alert-danger hidden">
-      <i class="bi bi-exclamation-triangle-fill fs-5"></i>
-      <span id="errorText"></span>
-    </div>
-
-    <!-- ===== پیام موفقیت ===== -->
-    <div id="successMessage" class="alert alert-success hidden">
-      <i class="bi bi-check-circle-fill fs-5"></i>
-      <span id="successText"></span>
-    </div>
-
-    <!-- ===== فوتر ===== -->
-    <div class="footer">
-      <p class="mb-1">با ❤️ برای آینده‌سازان ایران</p>
-      <div class="footer-icons">
-        <i class="bi bi-star-fill" style="color: #fbbf24;"></i>
-        <i class="bi bi-heart-fill" style="color: #ef4444;"></i>
-        <i class="bi bi-lightning-fill" style="color: #fbbf24;"></i>
-      </div>
-    </div>
-
+    <div id="foot" class="foot hidden">با ❤️ برای آینده‌سازان ایران</div>
   </div>
+
+  <nav id="nav" class="nav hidden"><div class="nav-in">
+    <button data-tab="marks"><i class="bi bi-bar-chart-fill"></i>نمرات</button>
+    <button data-tab="absence"><i class="bi bi-calendar-x-fill"></i>غیبت‌ها</button>
+    <button data-tab="dossier"><i class="bi bi-journal-check"></i>گزارش روزانه</button>
+    <button data-tab="report"><i class="bi bi-file-earmark-pdf-fill"></i>کارنامه</button>
+  </div></nav>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const usernameInput = document.getElementById('username');
-      const passwordInput = document.getElementById('password');
-      const loginBtn = document.getElementById('loginBtn');
-      const togglePasswordBtn = document.getElementById('togglePassword');
-      const logoutBtn = document.getElementById('logoutBtn');
-      const loginCard = document.getElementById('loginCard');
-      const studentInfoDiv = document.getElementById('studentInfo');
-      const tabButtons = document.getElementById('tabButtons');
-      const marksTabBtn = document.getElementById('marksTabBtn');
-      const absenceTabBtn = document.getElementById('absenceTabBtn');
-      const dossierTabBtn = document.getElementById('dossierTabBtn');
-      const dossierSection = document.getElementById('parentDossier');
-      const marksSection = document.getElementById('marksSection');
-      const absenceSection = document.getElementById('absenceSection');
-      const marksResultDiv = document.getElementById('marksResult');
-      const absencesResultDiv = document.getElementById('absencesResult');
-      const loadingDiv = document.getElementById('loading');
-      const errorMessageDiv = document.getElementById('errorMessage');
-      const errorText = document.getElementById('errorText');
-      const successMessageDiv = document.getElementById('successMessage');
-      const successText = document.getElementById('successText');
-      const marksTableBody = document.getElementById('marksTableBody');
-      const absencesTableBody = document.getElementById('absencesTableBody');
-      const marksStats = document.getElementById('marksStats');
-      const absencesStats = document.getElementById('absencesStats');
-      const studentPhoto = document.getElementById('studentPhoto');
-      const photoPlaceholder = document.getElementById('photoPlaceholder');
-      const monthSelector = document.getElementById('monthSelector');
-      const showMarksBtn = document.getElementById('showMarks');
-      const openMonthlyReportBtn = document.getElementById('openMonthlyReport');
-      const showAbsencesBtn = document.getElementById('showAbsences');
-      const loadDossierBtn = document.getElementById('loadDossierBtn');
-      const printDossierBtn = document.getElementById('printDossierBtn');
-      const dossierStudentLine = document.getElementById('dossierStudentLine');
-      const dossierSummary = document.getElementById('dossierSummary');
-      const dossierAttendanceCards = document.getElementById('dossierAttendanceCards');
-      const dossierGradesBody = document.getElementById('dossierGradesBody');
+      const $ = (id) => document.getElementById(id);
+      const MONTHS = ['مهر','آبان','آذر','دی','بهمن','اسفند','فروردین','اردیبهشت','خرداد'];
+      const els = {
+        user: $('username'), pass: $('password'), login: $('loginBtn'), eye: $('togglePassword'), logout: $('logoutBtn'),
+        loginWrap: $('loginWrap'), info: $('studentInfo'), nav: $('nav'), foot: $('foot'), loading: $('loading'),
+        photo: $('studentPhoto'), ph: $('photoPlaceholder'), marks: $('marksResult'), abs: $('absencesResult'),
+        dSum: $('dossierSummary'), dCards: $('dossierAttendanceCards'), dGrades: $('dossierGradesBody'), dLine: $('dossierStudentLine')
+      };
+      const panels = ['marks', 'absence', 'dossier', 'report'];
+      let code = sessionStorage.getItem('studentCode') || '';
+      let token = sessionStorage.getItem('parentSessionToken') || '';
+      let studentName = '', month = '', tab = '', absLoaded = false, dosLoaded = false, filter = 'all';
 
-      let currentStudentCode = sessionStorage.getItem('studentCode') || '';
-      let parentSessionToken = sessionStorage.getItem('parentSessionToken') || ''; 
-      let currentStudentName = '';
-      let currentMonth = '';
-
-      if (currentStudentCode && parentSessionToken) {
-        loadStudentData(currentStudentCode);
-      } else {
-        sessionStorage.removeItem('studentCode');
-        sessionStorage.removeItem('parentSessionToken');
-        currentStudentCode = '';
-        parentSessionToken = '';
+      // ---------- ابزارها ----------
+      const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      function el(tag, cls, text) { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+      const showLoading = () => els.loading.classList.remove('hidden');
+      const hideLoading = () => els.loading.classList.add('hidden');
+      let toastTimer;
+      function toast(msg, type) {
+        const t = $('toast'); t.className = 'toast ' + type;
+        t.firstElementChild.className = 'bi ' + (type === 'err' ? 'bi-exclamation-triangle-fill' : 'bi-check-circle-fill');
+        t.lastElementChild.textContent = msg; clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => t.classList.add('hidden'), type === 'err' ? 5000 : 3000);
       }
+      const showError = (m) => { hideLoading(); toast(typeof m === 'string' ? m : (m && m.message) || 'خطایی رخ داد.', 'err'); };
+      const showSuccess = (m) => toast(m, 'suc');
+      const emptyBox = (icon, text) => `<div class="empty"><i class="bi ${icon}"></i>${esc(text)}</div>`;
 
-      togglePasswordBtn.addEventListener('click', () => {
-        const isPassword = passwordInput.type === 'password';
-        passwordInput.type = isPassword ? 'text' : 'password';
-        togglePasswordBtn.innerHTML = isPassword 
-          ? '<i class="bi bi-eye-slash-fill"></i>' 
-          : '<i class="bi bi-eye-fill"></i>';
+      // ---------- انتخاب ماه (مشترک بین نمرات و کارنامه) ----------
+      function currentPersianMonth() {
+        try { const m = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { month: 'long' }).format(new Date()); return MONTHS.includes(m) ? m : ''; }
+        catch (e) { return ''; }
+      }
+      month = currentPersianMonth() || MONTHS[0];
+      document.querySelectorAll('[data-months]').forEach((box) => {
+        MONTHS.forEach((m) => { const b = el('button', 'chip', m); b.dataset.m = m; box.appendChild(b); });
+        box.addEventListener('click', (e) => {
+          const b = e.target.closest('.chip'); if (!b) return;
+          month = b.dataset.m; syncMonth();
+          if (tab === 'marks') loadMarks();
+        });
       });
+      function syncMonth() {
+        document.querySelectorAll('[data-months] .chip').forEach((c) => c.classList.toggle('on', c.dataset.m === month));
+        $('pickedMonth').textContent = month || '—';
+      }
+      syncMonth();
 
-      loginBtn.addEventListener('click', () => {
-        const username = usernameInput.value.trim();
-        const password = passwordInput.value.trim();
+      // ---------- ورود / خروج ----------
+      if (code && token) loadStudent(code); else clearSession();
+      function clearSession() { sessionStorage.removeItem('studentCode'); sessionStorage.removeItem('parentSessionToken'); code = ''; token = ''; }
 
-        if (!username || !password) {
-          showError('لطفاً نام کاربری و رمز عبور را وارد کنید.');
-          return;
-        }
-
-        showLoading();
-        hideError();
-
+      els.eye.addEventListener('click', () => {
+        const hid = els.pass.type === 'password'; els.pass.type = hid ? 'text' : 'password';
+        els.eye.innerHTML = hid ? '<i class="bi bi-eye-slash-fill"></i>' : '<i class="bi bi-eye-fill"></i>';
+      });
+      els.login.addEventListener('click', () => {
+        const u = els.user.value.trim(), p = els.pass.value.trim();
+        if (!u || !p) return showError('لطفاً نام کاربری و رمز عبور را وارد کنید.');
+        showLoading(); els.login.disabled = true;
         google.script.run
-          .withSuccessHandler(handleLoginResponse)
-          .withFailureHandler((err) => {
-            hideLoading();
-            showError('خطا در ارتباط با سرور: ' + err.message);
-          })
-          .authenticateUser(username, password);
+          .withSuccessHandler((r) => { els.login.disabled = false; onLogin(r); })
+          .withFailureHandler((err) => { els.login.disabled = false; showError('خطا در ارتباط با سرور: ' + (err && err.message)); })
+          .authenticateUser(u, p);
       });
+      els.pass.addEventListener('keydown', (e) => { if (e.key === 'Enter') els.login.click(); });
+      els.user.addEventListener('keydown', (e) => { if (e.key === 'Enter') els.pass.focus(); });
 
-      function handleLoginResponse(response) {
+      function onLogin(r) {
         hideLoading();
-        if (!response.success) {
-          showError(response.message || 'ورود ناموفق بود.');
-          return;
-        }
-
-        if (!response.sessionToken) { showError('نشست امن ورود ساخته نشد؛ لطفاً دوباره تلاش کنید.'); return; }
-        currentStudentCode = response.user.username;
-        parentSessionToken = response.sessionToken;
-        currentStudentName = response.user.name || '';
-        sessionStorage.setItem('studentCode', currentStudentCode);
-        sessionStorage.setItem('parentSessionToken', parentSessionToken);
-
-        showSuccess('🎉 خوش آمدید! ورود با موفقیت انجام شد.');
-        loadStudentData(currentStudentCode, response.user);
+        if (!r || !r.success) return showError((r && r.message) || 'ورود ناموفق بود.');
+        if (!r.sessionToken) return showError('نشست امن ورود ساخته نشد؛ لطفاً دوباره تلاش کنید.');
+        code = r.user.username; token = r.sessionToken; studentName = r.user.name || '';
+        sessionStorage.setItem('studentCode', code); sessionStorage.setItem('parentSessionToken', token);
+        showSuccess('خوش آمدید! ورود با موفقیت انجام شد.');
+        loadStudent(code, r.user);
       }
 
-      function loadStudentData(studentCode, userInfo) {
+      function fillInfo(name, code2, paye, reshte) {
+        $('infoCode').textContent = code2 || '-'; $('infoGrade').textContent = paye || '-';
+        $('infoField').textContent = reshte || '-'; $('studentNameTitle').textContent = name || '-';
+      }
+      function enterApp() {
+        els.loginWrap.classList.add('hidden'); els.info.classList.remove('hidden');
+        els.nav.classList.remove('hidden'); els.foot.classList.remove('hidden');
+        hideLoading(); setTab('marks');
+      }
+      function loadStudent(c, u) {
+        showLoading();
         google.script.run
           .withSuccessHandler((data) => {
-            let studentName = currentStudentName || (userInfo ? userInfo.name : '') || '-';
-            let studentPaye = (userInfo ? userInfo.paye : '') || '-';
-            let studentReshte = (userInfo ? userInfo.reshte : '') || '-';
-            let studentCodeShow = studentCode;
-
-            if (Array.isArray(data) && data.length > 0) {
-              const student = data[0];
-              studentName = student['نام'] || studentName;
-              studentPaye = student['پایه'] || studentPaye;
-              studentReshte = student['رشته'] || studentReshte;
-              studentCodeShow = student['کد دانش‌آموز'] || studentCode;
-              currentStudentName = studentName;
+            let name = studentName || (u && u.name) || '-', paye = (u && u.paye) || '-', reshte = (u && u.reshte) || '-', c2 = c;
+            if (Array.isArray(data) && data.length) {
+              const s = data[0]; name = s['نام'] || name; paye = s['پایه'] || paye; reshte = s['رشته'] || reshte; c2 = s['کد دانش‌آموز'] || c;
+              studentName = name;
             }
-
-            document.getElementById('infoCode').textContent = studentCodeShow;
-            document.getElementById('infoName').textContent = studentName;
-            document.getElementById('infoGrade').textContent = studentPaye;
-            document.getElementById('infoField').textContent = studentReshte;
-            document.getElementById('studentNameTitle').textContent = studentName;
-
-            google.script.run
-              .withSuccessHandler(displayStudentPhoto)
-              .withFailureHandler(hideStudentPhoto)
-              .getStudentPhoto(parentSessionToken);
-
-            loginCard.classList.add('hidden');
-            studentInfoDiv.classList.remove('hidden');
-            tabButtons.classList.remove('hidden');
-            logoutBtn.classList.remove('hidden');
-            hideLoading();
-            hideError();
+            fillInfo(name, c2, paye, reshte);
+            google.script.run.withSuccessHandler(showPhoto).withFailureHandler(hidePhoto).getStudentPhoto(token);
+            enterApp();
           })
-          .withFailureHandler((err) => {
-            document.getElementById('infoCode').textContent = studentCode;
-            document.getElementById('infoName').textContent = currentStudentName || '-';
-            document.getElementById('infoGrade').textContent = (userInfo ? userInfo.paye : '') || '-';
-            document.getElementById('infoField').textContent = (userInfo ? userInfo.reshte : '') || '-';
-            document.getElementById('studentNameTitle').textContent = currentStudentName || '-';
+          .withFailureHandler(() => { fillInfo(studentName, c, u && u.paye, u && u.reshte); enterApp(); })
+          .getStudentMarks(token, '');
+      }
+      function showPhoto(url) {
+        if (!url) return hidePhoto();
+        const img = new Image();
+        img.onload = () => { els.photo.src = url; els.photo.classList.remove('hidden'); els.ph.classList.add('hidden'); };
+        img.onerror = hidePhoto; img.src = url;
+      }
+      function hidePhoto() { els.photo.classList.add('hidden'); els.ph.classList.remove('hidden'); }
 
-            loginCard.classList.add('hidden');
-            studentInfoDiv.classList.remove('hidden');
-            tabButtons.classList.remove('hidden');
-            logoutBtn.classList.remove('hidden');
-            hideLoading();
-          })
-          .getStudentMarks(parentSessionToken, '');
+      els.logout.addEventListener('click', () => {
+        if (token) { try { google.script.run.logoutParent(token); } catch (e) {} }
+        clearSession(); studentName = ''; tab = ''; absLoaded = dosLoaded = false;
+        panels.forEach((p) => $('p-' + p).classList.add('hidden'));
+        els.info.classList.add('hidden'); els.nav.classList.add('hidden'); els.foot.classList.add('hidden');
+        els.loginWrap.classList.remove('hidden');
+        els.user.value = ''; els.pass.value = ''; els.pass.type = 'password';
+        els.eye.innerHTML = '<i class="bi bi-eye-fill"></i>';
+        els.marks.innerHTML = ''; els.abs.innerHTML = ''; els.dSum.innerHTML = ''; els.dCards.innerHTML = ''; els.dGrades.innerHTML = '';
+        hidePhoto(); hideLoading(); window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // ---------- تب‌ها ----------
+      function setTab(t) {
+        tab = t;
+        panels.forEach((p) => $('p-' + p).classList.toggle('hidden', p !== t));
+        document.querySelectorAll('.nav button').forEach((b) => b.classList.toggle('on', b.dataset.tab === t));
+        if (t === 'marks') loadMarks();
+        if (t === 'absence' && !absLoaded) loadAbsences();
+        if (t === 'dossier' && !dosLoaded) loadDossier();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      document.querySelectorAll('.nav button').forEach((b) => b.addEventListener('click', () => setTab(b.dataset.tab)));
+
+      // ---------- نمرات (با انتخاب ماه خودکار نمایش داده می‌شود) ----------
+      function loadMarks() {
+        if (!token) return;
+        const m = month; showLoading(); els.marks.innerHTML = '';
+        google.script.run
+          .withSuccessHandler((d) => { if (m === month) renderMarks(d, m); })
+          .withFailureHandler(showError)
+          .getStudentMarks(token, m);
+      }
+      function renderMarks(data, m) {
+        hideLoading();
+        if (!Array.isArray(data) || !data.length) { els.marks.innerHTML = emptyBox('bi-inbox', 'نمره‌ای برای ماه ' + m + ' ثبت نشده است.'); return; }
+        let total = 0, n = 0, pass = 0, fail = 0, rows = '';
+        data.forEach((x) => {
+          const s = parseFloat(x['نمره']), ok = !isNaN(s) && s >= 10;
+          if (!isNaN(s)) { total += s; n++; ok ? pass++ : fail++; }
+          rows += `<div class="row"><div class="name">${esc(x['درس'] || '-')}</div>
+            <span class="pill ${ok ? 'ok' : 'warn'}">${ok ? 'قبول' : 'نیاز به تلاش'}</span>
+            <span class="score ${ok ? 'pass' : 'fail'}">${isNaN(s) ? '-' : s}</span></div>`;
+        });
+        els.marks.innerHTML = `<div class="stats">
+          <div class="stat g1"><b>${n ? (total / n).toFixed(2) : '-'}</b><span>میانگین</span></div>
+          <div class="stat g2"><b>${n}</b><span>تعداد دروس</span></div>
+          <div class="stat g3"><b>${pass}</b><span>قبول</span></div>
+          <div class="stat g4"><b>${fail}</b><span>نیاز به تلاش</span></div></div>
+          <div class="list">${rows}</div>`;
       }
 
-      function displayStudentPhoto(photoUrl) {
-        if (photoUrl) {
-          const img = new Image();
-          img.onload = () => {
-            studentPhoto.src = photoUrl;
-            studentPhoto.classList.remove('hidden');
-            photoPlaceholder.classList.add('hidden');
-          };
-          img.onerror = () => hideStudentPhoto();
-          img.src = photoUrl;
-        } else {
-          hideStudentPhoto();
-        }
+      // ---------- غیبت‌ها (با ورود به تب نمایش داده می‌شود) ----------
+      function loadAbsences() {
+        if (!token) return;
+        showLoading(); els.abs.innerHTML = '';
+        google.script.run
+          .withSuccessHandler((d) => { absLoaded = true; renderAbsences(d); })
+          .withFailureHandler(showError)
+          .getStudentAbsences(token);
+      }
+      function renderAbsences(data) {
+        hideLoading();
+        if (!Array.isArray(data) || !data.length) { els.abs.innerHTML = emptyBox('bi-emoji-smile', 'غیبتی برای این دانش‌آموز ثبت نشده است.'); return; }
+        let bells = 0, just = 0, unj = 0, rows = '';
+        data.forEach((a) => {
+          const c = Number(a.absentBells || 0), j = a.justified === true; bells += c; j ? just++ : unj++;
+          rows += `<div class="row"><span class="date">${esc(a.date || '---')}</span>
+            <span class="pill ${j ? 'ok' : 'bad'}">${j ? 'موجه' : 'غیرموجه'}</span>
+            <div class="name" style="text-align:left">${c} زنگ</div></div>`;
+        });
+        els.abs.innerHTML = `<div class="stats">
+          <div class="stat g2"><b>${data.length}</b><span>روز دارای غیبت</span></div>
+          <div class="stat g4"><b>${bells}</b><span>مجموع زنگ‌ها</span></div>
+          <div class="stat g5"><b>${unj}</b><span>روز غیرموجه</span></div>
+          <div class="stat g3"><b>${just}</b><span>روز موجه</span></div></div>
+          <div class="list">${rows}</div>`;
       }
 
-      function hideStudentPhoto() {
-        studentPhoto.classList.add('hidden');
-        photoPlaceholder.classList.remove('hidden');
-      }
-
-      function setActiveParentTab(which) {
-        marksSection.classList.toggle('hidden', which !== 'marks');
-        absenceSection.classList.toggle('hidden', which !== 'absence');
-        dossierSection.classList.toggle('hidden', which !== 'dossier');
-        marksTabBtn.classList.toggle('active', which === 'marks');
-        absenceTabBtn.classList.toggle('active', which === 'absence');
-        dossierTabBtn.classList.toggle('active', which === 'dossier');
-        if (which === 'dossier' && dossierAttendanceCards.dataset.loaded !== '1') loadParentDossier();
-      }
-      marksTabBtn.addEventListener('click', () => setActiveParentTab('marks'));
-      absenceTabBtn.addEventListener('click', () => setActiveParentTab('absence'));
-      dossierTabBtn.addEventListener('click', () => setActiveParentTab('dossier'));
-      loadDossierBtn.addEventListener('click', loadParentDossier);
-      printDossierBtn.addEventListener('click', () => {
-        if (!parentSessionToken) { showError('نشست معتبر نیست؛ دوباره وارد شوید.'); return; }
-        if (dossierAttendanceCards.dataset.loaded !== '1') { showError('ابتدا گزارش را بارگذاری کنید.'); return; }
+      // ---------- گزارش روزانه ----------
+      $('loadDossierBtn').addEventListener('click', loadDossier);
+      $('printDossierBtn').addEventListener('click', () => {
+        if (!token) return showError('نشست معتبر نیست؛ دوباره وارد شوید.');
+        if (!dosLoaded) return showError('ابتدا گزارش را بارگذاری کنید.');
         window.print();
       });
-
-      function loadParentDossier() {
-        if (!parentSessionToken) { showError('نشست ورود منقضی شده است؛ لطفاً دوباره وارد شوید.'); return; }
-        showLoading(); hideError();
-        dossierStudentLine.textContent = 'در حال دریافت گزارش روزانه...';
-        google.script.run
-          .withSuccessHandler(renderParentDossier)
-          .withFailureHandler((err) => { hideLoading(); showError(err && err.message ? err.message : 'دریافت گزارش روزانه ناموفق بود.'); })
-          .getParentStudentDossier(parentSessionToken);
-      }
-      function safeCell(value) {
-        const td = document.createElement('td'); td.textContent = value == null || value === '' ? '-' : String(value); return td;
-      }
-      function renderParentDossier(result) {
-        hideLoading();
-        if (!result || !result.success) { showError(result && result.error ? result.error : 'دریافت گزارش روزانه ناموفق بود.'); return; }
-        // دفاع مضاعف در رابط: فقط همان کد دانش‌آموزی که هنگام ورود ثبت شده است.
-        if (!result.student || String(result.student.code) !== String(currentStudentCode)) { showError('مغایرت هویت دانش‌آموز؛ برای حفظ حریم خصوصی دوباره وارد شوید.'); return; }
-        const st = result.summary || {};
-        dossierStudentLine.textContent = 'دانش‌آموز: ' + (result.student.name || currentStudentName || '-') + ' | کلاس: ' + (result.student.classCode || '-') + ' | کد دانش‌آموز: ' + result.student.code;
-        dossierSummary.innerHTML = '';
-        [
-          ['حاضر', st.present || 0, 'linear-gradient(135deg,#10b981,#06b6d4)'],
-          ['غایب', st.absent || 0, 'linear-gradient(135deg,#ef4444,#f97316)'],
-          ['تأخیر', st.late || 0, 'linear-gradient(135deg,#8b5cf6,#6366f1)'],
-          ['موجه', st.excused || 0, 'linear-gradient(135deg,#0ea5e9,#14b8a6)']
-        ].forEach(x => { const card=document.createElement('div'); card.className='dossier-stat'; card.style.background=x[2]; const strong=document.createElement('strong'); strong.textContent=x[1]; const span=document.createElement('span'); span.textContent=x[0]; card.append(strong,span); dossierSummary.appendChild(card); });
-        dossierAttendanceCards.innerHTML = '';
-        const records = Array.isArray(result.attendance) ? result.attendance : [];
-        if (!records.length) {
-          const empty=document.createElement('div'); empty.className='daily-empty';
-          empty.textContent='هنوز سابقه حضور و غیابی برای این دانش‌آموز ثبت نشده است.';
-          dossierAttendanceCards.appendChild(empty);
-        } else {
-          const byDay = new Map();
-          records.forEach(r => {
-            const day = String(r.date || 'تاریخ نامشخص');
-            if (!byDay.has(day)) byDay.set(day, []);
-            byDay.get(day).push(r);
-          });
-          byDay.forEach((dayRecords, day) => {
-            const card=document.createElement('article'); card.className='daily-card';
-            const head=document.createElement('div'); head.className='daily-card-head';
-            const title=document.createElement('strong'); title.textContent='📅 ' + day;
-            const count=document.createElement('span'); count.className='daily-count'; count.textContent=dayRecords.length + ' زنگ';
-            head.append(title,count); card.appendChild(head);
-            const bells=document.createElement('div'); bells.className='daily-bells';
-            dayRecords.forEach(r => {
-              const bell=document.createElement('div'); bell.className='daily-bell';
-              const top=document.createElement('div'); top.className='daily-bell-top';
-              const bellNo=document.createElement('span'); bellNo.className='daily-bell-number'; bellNo.textContent='زنگ ' + (r.bell || '-');
-              const status=document.createElement('span'); status.className='daily-status';
-              const stText=String(r.status || 'ثبت‌نشده'); status.textContent=stText;
-              if (/غایب|غياب/.test(stText)) status.classList.add('status-absent');
-              else if (/تأخیر|تاخیر|دیر/.test(stText)) status.classList.add('status-late');
-              else if (/حاضر/.test(stText)) status.classList.add('status-present');
-              else if (/موجه/.test(stText)) status.classList.add('status-excused');
-              top.append(bellNo,status); bell.appendChild(top);
-              const lesson=document.createElement('div'); lesson.className='daily-lesson'; lesson.textContent='📘 ' + (r.lesson || 'درس ثبت نشده'); bell.appendChild(lesson);
-              const meta=document.createElement('div'); meta.className='daily-meta';
-              const teacher=document.createElement('span'); teacher.textContent='👨‍🏫 ' + (r.teacher || 'دبیر نامشخص'); meta.appendChild(teacher);
-              if (r.delay && String(r.delay) !== '-' && String(r.delay) !== '0') { const delay=document.createElement('span'); delay.textContent='⏱️ تأخیر: ' + r.delay; meta.appendChild(delay); }
-              bell.appendChild(meta); bells.appendChild(bell);
-            });
-            card.appendChild(bells); dossierAttendanceCards.appendChild(card);
-          });
-        }
-        dossierGradesBody.innerHTML = '';
-        const grades = Array.isArray(result.grades) ? result.grades.slice(0,100) : [];
-        if (!grades.length) { const tr=document.createElement('tr'); const td=safeCell('نمره‌ای در شیت اصلی نمرات برای این دانش‌آموز ثبت نشده است.'); td.colSpan=5; tr.appendChild(td); dossierGradesBody.appendChild(tr); }
-        grades.forEach((g,i)=>{const tr=document.createElement('tr');[i+1,g.date,g.lesson,g.type,g.grade].forEach(v=>tr.appendChild(safeCell(v)));dossierGradesBody.appendChild(tr);});
-        dossierAttendanceCards.dataset.loaded='1';
-        hideError();
-      }
-
-      showMarksBtn.addEventListener('click', () => {
-        const selectedMonth = monthSelector.value;
-        if (!selectedMonth) {
-          showError('لطفاً یک ماه را انتخاب کنید.');
-          return;
-        }
-        currentMonth = selectedMonth;
-        showLoading();
-        hideError();
-
-        google.script.run
-          .withSuccessHandler((data) => displayMarks(data, selectedMonth))
-          .withFailureHandler(showError)
-          .getStudentMarks(parentSessionToken, selectedMonth);
+      $('dossierFilters').addEventListener('click', (e) => {
+        const b = e.target.closest('.chip'); if (!b) return;
+        filter = b.dataset.f;
+        document.querySelectorAll('#dossierFilters .chip').forEach((c) => c.classList.toggle('on', c === b));
+        applyFilter();
       });
-
-      openMonthlyReportBtn.addEventListener('click', () => {
-        const selectedMonth = monthSelector.value;
-        if (!selectedMonth) {
-          showError('لطفاً یک ماه را انتخاب کنید.');
-          return;
-        }
-        if (!currentStudentCode) {
-          showError('ابتدا وارد پنل شوید.');
-          return;
-        }
-
+      function applyFilter() {
+        let shown = 0;
+        els.dCards.querySelectorAll('.day').forEach((d) => {
+          let any = 0;
+          d.querySelectorAll('.bell').forEach((b) => { const ok = filter === 'all' || b.dataset.s === filter; b.classList.toggle('hidden', !ok); if (ok) any++; });
+          d.classList.toggle('hidden', !any); if (any) shown++;
+          d.querySelector('.cnt').textContent = any + ' زنگ';
+        });
+        const old = els.dCards.querySelector('.empty'); if (old) old.remove();
+        if (!shown && els.dCards.querySelector('.day')) els.dCards.insertAdjacentHTML('beforeend', emptyBox('bi-funnel', 'موردی با این فیلتر پیدا نشد.'));
+      }
+      function statusKey(t) {
+        if (/غایب|غياب/.test(t)) return 'absent';
+        if (/تأخیر|تاخیر|دیر/.test(t)) return 'late';
+        if (/حاضر/.test(t)) return 'present';
+        if (/موجه/.test(t)) return 'excused';
+        return 'other';
+      }
+      const PILL = { absent: 'bad', late: 'warn', present: 'ok', excused: 'info', other: 'muted' };
+      function loadDossier() {
+        if (!token) return showError('نشست ورود منقضی شده است؛ لطفاً دوباره وارد شوید.');
         showLoading();
-        hideError();
+        google.script.run
+          .withSuccessHandler(renderDossier)
+          .withFailureHandler((err) => showError((err && err.message) || 'دریافت گزارش روزانه ناموفق بود.'))
+          .getParentStudentDossier(token);
+      }
+      function renderDossier(res) {
+        hideLoading();
+        if (!res || !res.success) return showError((res && res.error) || 'دریافت گزارش روزانه ناموفق بود.');
+        if (!res.student || String(res.student.code) !== String(code)) return showError('مغایرت هویت دانش‌آموز؛ برای حفظ حریم خصوصی دوباره وارد شوید.');
+        const st = res.summary || {};
+        els.dLine.textContent = 'کلاس: ' + (res.student.classCode || '-') + ' | کد دانش‌آموز: ' + res.student.code;
+        els.dSum.innerHTML = '';
+        [['حاضر', st.present, 'g3'], ['غایب', st.absent, 'g5'], ['تأخیر', st.late, 'g4'], ['موجه', st.excused, 'g2']].forEach((x) => {
+          const c = el('div', 'stat ' + x[2]); c.append(el('b', '', x[1] || 0), el('span', '', x[0])); els.dSum.appendChild(c);
+        });
 
+        els.dCards.innerHTML = '';
+        const recs = Array.isArray(res.attendance) ? res.attendance : [];
+        if (!recs.length) els.dCards.innerHTML = emptyBox('bi-calendar-check', 'هنوز سابقه حضور و غیابی ثبت نشده است.');
+        else {
+          const byDay = new Map();
+          recs.forEach((r) => { const d = String(r.date || 'تاریخ نامشخص'); if (!byDay.has(d)) byDay.set(d, []); byDay.get(d).push(r); });
+          let first = true;
+          byDay.forEach((list, day) => {
+            const card = el('article', 'day' + (first ? ' open' : '')); first = false;
+            const head = el('button', 'day-head'); head.type = 'button';
+            head.append(el('span', 'date', day), el('span', 'pill muted cnt', list.length + ' زنگ'), el('i', 'bi bi-chevron-down chev'));
+            head.addEventListener('click', () => card.classList.toggle('open'));
+            const body = el('div', 'day-body');
+            list.forEach((r) => {
+              const stText = String(r.status || 'ثبت‌نشده'), key = statusKey(stText);
+              const b = el('div', 'bell'); b.dataset.s = key;
+              const top = el('div', 'bell-top'); top.append(el('span', 'bell-no', 'زنگ ' + (r.bell || '-')), el('span', 'pill ' + PILL[key], stText));
+              const meta = el('div', 'bell-m'); meta.appendChild(el('span', '', '👨‍🏫 ' + (r.teacher || 'دبیر نامشخص')));
+              if (r.delay && String(r.delay) !== '-' && String(r.delay) !== '0') meta.appendChild(el('span', '', '⏱️ تأخیر: ' + r.delay));
+              b.append(top, el('div', 'bell-l', '📘 ' + (r.lesson || 'درس ثبت نشده')), meta); body.appendChild(b);
+            });
+            card.append(head, body); els.dCards.appendChild(card);
+          });
+          applyFilter();
+        }
+
+        els.dGrades.innerHTML = '';
+        const grades = Array.isArray(res.grades) ? res.grades.slice(0, 100) : [];
+        if (!grades.length) { const tr = el('tr'), td = el('td', '', 'نمره‌ای ثبت نشده است.'); td.colSpan = 5; tr.appendChild(td); els.dGrades.appendChild(tr); }
+        grades.forEach((g, i) => {
+          const tr = el('tr');
+          [i + 1, g.date, g.lesson, g.type, g.grade].forEach((v) => tr.appendChild(el('td', '', v == null || v === '' ? '-' : v)));
+          els.dGrades.appendChild(tr);
+        });
+        dosLoaded = true;
+      }
+
+      // ---------- دانلود کارنامه ----------
+      $('openMonthlyReport').addEventListener('click', () => {
+        if (!month) return showError('لطفاً یک ماه را انتخاب کنید.');
+        if (!code) return showError('ابتدا وارد پنل شوید.');
+        const btn = $('openMonthlyReport'); btn.disabled = true; showLoading();
         google.script.run
           .withSuccessHandler((res) => {
-            hideLoading();
+            hideLoading(); btn.disabled = false;
             try {
               if (!res || !res.base64) throw new Error('فایل PDF دریافت نشد.');
-              const binary = atob(res.base64);
-              const bytes = new Uint8Array(binary.length);
-              for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-              const blob = new Blob([bytes], { type: 'application/pdf' });
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url; a.download = res.fileName || 'کارنامه.pdf';
+              const bin = atob(res.base64), bytes = new Uint8Array(bin.length);
+              for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+              const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+              const a = document.createElement('a'); a.href = url; a.download = res.fileName || 'کارنامه.pdf';
               document.body.appendChild(a); a.click(); a.remove();
               setTimeout(() => URL.revokeObjectURL(url), 30000);
-              showSuccess('📄 دانلود کارنامه PDF آغاز شد.');
+              showSuccess('دانلود کارنامه PDF آغاز شد.');
             } catch (e) { showError(e.message || 'ساخت فایل PDF ناموفق بود.'); }
           })
-          .withFailureHandler((err) => {
-            hideLoading();
-            showError(err && err.message ? err.message : 'کارنامه این ماه یافت نشد.');
-          })
-          .getMonthlyReportPDF(parentSessionToken, selectedMonth);
+          .withFailureHandler((err) => { btn.disabled = false; showError((err && err.message) || 'کارنامه این ماه یافت نشد.'); })
+          .getMonthlyReportPDF(token, month);
       });
-
-      showAbsencesBtn.addEventListener('click', () => {
-        showLoading();
-        hideError();
-
-        google.script.run
-          .withSuccessHandler(displayAbsences)
-          .withFailureHandler(showError)
-          .getStudentAbsences(parentSessionToken);
-      });
-
-      function displayMarks(data, month) {
-        hideLoading();
-        if (!Array.isArray(data) || data.length === 0) {
-          showError('نمره‌ای برای ماه انتخاب‌شده یافت نشد.');
-          marksResultDiv.classList.add('hidden');
-          return;
-        }
-
-        marksTableBody.innerHTML = '';
-        let totalScore = 0, countScore = 0, passCount = 0, failCount = 0;
-
-        data.forEach((mark, index) => {
-          const score = parseFloat(mark['نمره']);
-          const isValidScore = !isNaN(score);
-          const isPass = isValidScore && score >= 10;
-          
-          if (isValidScore) {
-            totalScore += score;
-            countScore++;
-            if (isPass) passCount++; else failCount++;
-          }
-
-          const status = isPass
-            ? '<span class="status-chip status-pass">✅ قبول</span>'
-            : '<span class="status-chip status-fail">📈 تلاش</span>';
-          const scoreClass = isPass ? 'score-pass' : 'score-fail';
-          const scoreShow = isValidScore ? score : '-';
-
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td><span class="row-num">${index + 1}</span></td>
-            <td class="lesson-name">${mark['درس'] || '-'}</td>
-            <td><span class="score-badge ${scoreClass}">${scoreShow}</span></td>
-            <td>${status}</td>`;
-          marksTableBody.appendChild(tr);
-        });
-
-        const average = countScore > 0 ? (totalScore / countScore).toFixed(2) : '-';
-        marksStats.innerHTML = `
-          <div class="stat-box stat-box-1">
-            <div class="stat-value">${average}</div>
-            <div class="stat-label">📊 میانگین</div>
-          </div>
-          <div class="stat-box stat-box-2">
-            <div class="stat-value">${countScore}</div>
-            <div class="stat-label">📚 تعداد دروس</div>
-          </div>
-          <div class="stat-box stat-box-3">
-            <div class="stat-value">${passCount}</div>
-            <div class="stat-label">✅ قبول</div>
-          </div>
-          <div class="stat-box stat-box-4">
-            <div class="stat-value">${failCount}</div>
-            <div class="stat-label">📈 تلاش</div>
-          </div>
-        `;
-
-        document.getElementById('currentMonth').textContent = month;
-        marksResultDiv.classList.remove('hidden');
-        hideError();
-      }
-
-      // ============================================================
-      // نمایش گزارش غیبت‌ها؛ داده‌ها از شیت حضورغیاب دفتر کلاسی می‌آیند.
-      // هر ردیف نماینده یک روز است و تعداد زنگ‌های غایب در همان روز نمایش داده می‌شود.
-      // ============================================================
-      function displayAbsences(data) {
-        hideLoading();
-        if (!Array.isArray(data) || data.length === 0) {
-          showError('غیبتی برای این دانش‌آموز یافت نشد.');
-          absencesResultDiv.classList.add('hidden');
-          return;
-        }
-
-        absencesTableBody.innerHTML = '';
-        let totalAbsentBells = 0;
-        let justifiedDays = 0;
-        let unjustifiedDays = 0;
-
-        data.forEach((absence, index) => {
-          const date = absence.date || '---';
-          const count = Number(absence.absentBells || 0);
-          const justified = absence.justified === true;
-          const typeInfo = justified
-            ? { label: 'موجه', cssClass: 'type-justified' }
-            : { label: 'غیرموجه', cssClass: 'type-unjustified' };
-
-          totalAbsentBells += count;
-          if (justified) justifiedDays++;
-          else unjustifiedDays++;
-
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td><span class="row-num">${index + 1}</span></td>
-            <td><span class="date-chip">${date}</span></td>
-            <td><span class="type-chip ${typeInfo.cssClass}">${typeInfo.label}</span></td>
-            <td>${count} زنگ</td>`;
-          absencesTableBody.appendChild(tr);
-        });
-
-        absencesStats.innerHTML = `
-          <div class="stat-box stat-box-3" style="grid-column: 1 / -1;">
-            <div class="stat-value">${data.length}</div>
-            <div class="stat-label">📅 تعداد روزهای دارای غیبت</div>
-          </div>
-          <div class="stat-box" style="background:linear-gradient(135deg,#06b6d4,#0891b2);">
-            <div class="stat-value">${totalAbsentBells}</div>
-            <div class="stat-label">🔔 مجموع زنگ‌های غیبت</div>
-          </div>
-          <div class="stat-box" style="background:linear-gradient(135deg,#ef4444,#dc2626);">
-            <div class="stat-value">${unjustifiedDays}</div>
-            <div class="stat-label">❌ روزهای غیرموجه</div>
-          </div>
-          <div class="stat-box" style="background:linear-gradient(135deg,#10b981,#059669);">
-            <div class="stat-value">${justifiedDays}</div>
-            <div class="stat-label">✅ روزهای موجه</div>
-          </div>
-        `;
-
-        absencesResultDiv.classList.remove('hidden');
-        hideError();
-      }
-
-      logoutBtn.addEventListener('click', () => {
-        if (parentSessionToken) { try { google.script.run.logoutParent(parentSessionToken); } catch (e) {} }
-        sessionStorage.removeItem('studentCode');
-        sessionStorage.removeItem('parentSessionToken');
-        parentSessionToken = '';
-        currentStudentCode = '';
-        currentStudentName = '';
-        currentMonth = '';
-
-        loginCard.classList.remove('hidden');
-        studentInfoDiv.classList.add('hidden');
-        tabButtons.classList.add('hidden');
-        marksSection.classList.add('hidden');
-        absenceSection.classList.add('hidden');
-        dossierSection.classList.add('hidden');
-        marksResultDiv.classList.add('hidden');
-        absencesResultDiv.classList.add('hidden');
-        logoutBtn.classList.add('hidden');
-
-        marksTabBtn.classList.remove('active');
-        absenceTabBtn.classList.remove('active');
-        dossierTabBtn.classList.remove('active');
-
-        usernameInput.value = '';
-        passwordInput.value = '';
-        passwordInput.type = 'password';
-        togglePasswordBtn.innerHTML = '<i class="bi bi-eye-fill"></i>';
-        monthSelector.value = '';
-
-        marksTableBody.innerHTML = '';
-        absencesTableBody.innerHTML = '';
-        marksStats.innerHTML = '';
-        absencesStats.innerHTML = '';
-        dossierSummary.innerHTML = '';
-        dossierAttendanceCards.innerHTML = '';
-        dossierGradesBody.innerHTML = '';
-        dossierAttendanceCards.dataset.loaded = '';
-        dossierStudentLine.textContent = 'در حال دریافت گزارش روزانه...';
-        hideStudentPhoto();
-        hideError();
-        hideSuccess();
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-
-      passwordInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') loginBtn.click();
-      });
-      usernameInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') passwordInput.focus();
-      });
-
-      function showLoading() { loadingDiv.classList.remove('hidden'); }
-      function hideLoading() { loadingDiv.classList.add('hidden'); }
-
-      function showError(message) {
-        errorText.textContent = message;
-        errorMessageDiv.classList.remove('hidden');
-        hideLoading();
-        hideSuccess();
-        errorMessageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      function hideError() { errorMessageDiv.classList.add('hidden'); }
-
-      function showSuccess(message) {
-        successText.textContent = message;
-        successMessageDiv.classList.remove('hidden');
-        hideError();
-        setTimeout(hideSuccess, 3500);
-      }
-      function hideSuccess() { successMessageDiv.classList.add('hidden'); }
     });
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('sw.js').catch(function () {});
-      });
+      window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
     }
   </script>
 </body>
