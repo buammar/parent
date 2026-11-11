@@ -1,6 +1,6 @@
 // Service Worker ساده: فقط فایل‌های ثابت اپ را کش می‌کند.
 // درخواست‌های API (Apps Script) هرگز کش نمی‌شوند تا داده‌های دانش‌آموز جایی ذخیره نشود.
-var CACHE = 'parent-panel-v2';
+var CACHE = 'parent-panel-v4';
 var ASSETS = ['./', './index.html', './config.js', './api-shim.js', './manifest.json',
               './icons/icon-192.png', './icons/icon-512.png'];
 
