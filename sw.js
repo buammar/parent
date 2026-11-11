@@ -1,11 +1,11 @@
 // Service Worker ساده: فقط فایل‌های ثابت اپ را کش می‌کند.
 // درخواست‌های API (Apps Script) هرگز کش نمی‌شوند تا داده‌های دانش‌آموز جایی ذخیره نشود.
-var CACHE = 'parent-panel-v7';
+var CACHE = 'parent-panel-v2';
 var ASSETS = ['./', './index.html', './config.js', './api-shim.js', './manifest.json',
-              './icons/icon-192.png', './icons/icon-512.png'];
+              './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', function (e) {
-  e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(ASSETS); }));
+  e.waitUntil(caches.open(CACHE).then(function (c) { return Promise.all(ASSETS.map(function (a) { return c.add(a).catch(function () {}); })); }));
   self.skipWaiting();
 });
 
